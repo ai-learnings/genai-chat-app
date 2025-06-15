@@ -15,7 +15,7 @@ from langchain_ollama import ChatOllama
 
 
 # llm client
-# llmClient = genai.Client(api_key="AIzaSyCD8mM6LdsD6ykwS80myGk9N4MuknlVwOQ")
+# llmClient = genai.Client(api_key="")
 llmClient = ChatOllama(
     model = "llama3.1:8b",
     temperature = 0.8,
@@ -32,7 +32,7 @@ mongoCollection = mongoClient["llm-vec-embeding-db"]["embeddings"]
 # To generate query embedings
 embedingModelName = "mxbai-embed-large"   # mxbai-embed-large (ollama) or voyage-3.5
 
-# vo = voyageai.Client(api_key="pa-MPM8CRqKQLOefAB1Us_GZeri6dE1gsdBszfeNlZv8TH")
+# vo = voyageai.Client(api_key="")
 ollama = OllamaEmbeddings(
     base_url="localhost:11434",
     model=embedingModelName
