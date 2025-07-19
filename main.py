@@ -1,40 +1,37 @@
 from pydantic import BaseModel
 from typing import List
-import pymongo
-import voyageai
-import base64
-import os
-from bson import json_util
-from google import genai
-from google.genai import types
-import json
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from langchain_ollama import OllamaEmbeddings
-from langchain_ollama import ChatOllama
+from langchain_ollama import OllamaEmbeddings, ChatOllama
+import json
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 
 # llm client
-# llmClient = genai.Client(api_key="")
+# llmClient = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 llmClient = ChatOllama(
-    model = "llama3.1:8b",
-    temperature = 0.8,
-    num_predict = 256,
+    model = os.getenv("OLLAMA_MODEL"),
+    temperature = float(os.getenv("OLLAMA_TEMPERATURE", "0.8")),
+    num_predict = int(os.getenv("OLLAMA_NUM_PREDICT", "256")),
     # other params ...
 )
 
 # connect to your Atlas cluster
-uri = "mongodb://localhost:27017/?directConnection=true" # this is mongodb atlas (mongodb/mongodb-atlas-local:8.0.9)
+uri = os.getenv("MONGODB_URI")
 mongoClient = MongoClient(uri, server_api=ServerApi('1'))
-mongoCollection = mongoClient["llm-vec-embeding-db"]["embeddings"]
+mongoCollection = mongoClient[os.getenv("MONGODB_DATABASE")][os.getenv("MONGODB_COLLECTION")]
 
 
 # To generate query embedings
-embedingModelName = "mxbai-embed-large"   # mxbai-embed-large (ollama) or voyage-3.5
+embedingModelName = os.getenv("OLLAMA_EMBEDDING_MODEL")   # mxbai-embed-large (ollama) or voyage-3.5
 
-# vo = voyageai.Client(api_key="")
+# vo = voyageai.Client(api_key=os.getenv("VOYAGE_API_KEY"))
 ollama = OllamaEmbeddings(
-    base_url="localhost:11434",
+    base_url=os.getenv("OLLAMA_BASE_URL"),
     model=embedingModelName
 )
 
