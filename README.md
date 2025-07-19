@@ -44,6 +44,21 @@ OLLAMA_NUM_PREDICT=256
 
 > Note: Make sure to add `.env` to your `.gitignore` file to keep sensitive information secure.
 
+## MongoDB indexes
+Search vector index: llm-vec-embeding
+```
+{
+  "fields": [
+    {
+      "type": "vector",
+      "path": "data_embeded",
+      "numDimensions": 1024,
+      "similarity": "cosine"
+    }
+  ]
+}
+```
+
 ## License
 
 MIT
